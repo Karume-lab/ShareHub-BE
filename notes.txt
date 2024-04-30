@@ -1,0 +1,72 @@
+MODELS:
+    DASHBOARD
+        metadata -> JSON
+            title
+        charts
+
+    USER:
+        email
+        password
+        is_active
+        is_superuser - all
+        is_staff - all
+        is_mod - site content
+
+    USER_PROFILE:
+        user -> USER
+        username
+        first_name
+        last_name
+        phone_number
+        created_at (date joined)
+        bio
+        profile_picture
+
+    INNOVATION
+        title
+        author -> USER_PROFILE
+        description
+        dataset
+        created_at
+        updated_at
+        status:
+            DRAFT,
+            PUBLISHED,
+            DELETED
+        category
+        rating
+
+    COMMENT:
+        author -> USER_PROFILE
+        innovation -> USER_PROFILE
+        rating 
+        is_edited
+        created_at
+        updated_at
+        body
+
+
+    CATEGORY:
+
+
+    FORUM:
+        title
+        created_at
+        bio
+        profile_picture
+
+    
+    FORUM_MEMBER:
+        forum -> FORUM
+        member -> USER_PROFILE
+        is_mod
+
+
+
+
+
+
+what is a dashboard and what is a dashboard definition
+shared metadata across datasets
+categories for innovations
+check on rating
