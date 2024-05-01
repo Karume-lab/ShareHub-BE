@@ -4,8 +4,9 @@ from django.contrib.auth.models import (
     PermissionsMixin,
     BaseUserManager,
 )
-
 from django.contrib.auth.models import BaseUserManager
+from phonenumber_field.modelfields import PhoneNumberField
+from django.utils.translation import gettext_lazy as _
 
 
 class UserAccountManager(BaseUserManager):
@@ -29,16 +30,19 @@ class UserAccountManager(BaseUserManager):
 
 
 class CustomUserModel(AbstractBaseUser, PermissionsMixin):
+    class Meta:
+        verbose_name = "User"
+        verbose_name_plural = "Users"
+
     email = models.EmailField(max_length=255, unique=True)
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    is_mod = models.BooleanField(default=False)
 
     objects = UserAccountManager()
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["first_name", "last_name"]
+    REQUIRED_FIELDS = ()
 
     groups = models.ManyToManyField(
         "auth.Group", verbose_name="groups", blank=True, related_name="user_accounts"
@@ -51,18 +55,28 @@ class CustomUserModel(AbstractBaseUser, PermissionsMixin):
         related_name="user_accounts",
     )
 
-    def get_full_name(self):
-        return self.first_name
-
-    def get_short_name(self):
-        return self.first_name
-
     def __str__(self):
         return self.email
 
     def __repr__(self) -> str:
         return self.email
 
-    class Meta:
-        verbose_name = "User"
-        verbose_name_plural = "Users"
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(
+        CustomUserModel, verbose_name=_("User"), on_delete=models.CASCADE
+    )
+    username = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    phone_number = PhoneNumberField(blank=True)
+    bio = models.TextField(_("Bio"))
+    profile_picture = models.ImageField(
+        _("Profile Picture"),
+        upload_to=f"profile_images/{user.email}",
+        blank=True,
+        null=True,
+        height_field=None,
+        width_field=None,
+        max_length=None,
+    )

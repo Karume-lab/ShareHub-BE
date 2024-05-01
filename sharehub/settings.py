@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # EXTERNAL APPS
     "rest_framework",
     "djoser",
+    "phonenumber_field",
     # INTERNAL APPS
     "accounts",
     "core",

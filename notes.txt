@@ -1,101 +1,93 @@
 MODELS:
-    DASHBOARD
-        metadata -> JSON
-            title
-        charts
+DASHBOARD
+metadata -> JSON
+title
+charts
 
-    USER:
-        email
-        password
-        is_active
-        is_superuser - all
-        is_staff - all
-        is_mod - site content
+USER:
+email
+password
+is_active
+is_superuser - all
+is_staff - all
+is_mod - site content
 
-    USER_PROFILE:
-        user -> USER
-        username
-        first_name
-        last_name
-        phone_number
-        created_at (date joined)
-        bio
-        profile_picture
+USER_PROFILE:
+user -> USER
+username
+first_name
+last_name
+phone_number
+created_at (date joined)
+bio
+profile_picture
 
-    INNOVATION
-        title
-        author -> USER_PROFILE
-        description
-        dataset
-        created_at
-        updated_at
-        status:
-            DRAFT,
-            PUBLISHED,
-            DELETED
-        category
-        rating
+INNOVATION
+title
+author -> USER_PROFILE
+description
+dataset
+created_at
+updated_at
+status:
+DRAFT,
+PUBLISHED,
+DELETED
+category
+rating
 
-    COMMENT:
-        author -> USER_PROFILE
-        innovation -> USER_PROFILE
-        rating 
-        is_edited
-        created_at
-        updated_at
-        body
+COMMENT:
+author -> USER_PROFILE
+innovation -> USER_PROFILE
+rating
+is_edited
+created_at
+updated_at
+body
 
+CATEGORY:
 
-    CATEGORY:
+FORUM:
+title
+created_at
+bio
+profile_picture
 
-
-    FORUM:
-        title
-        created_at
-        bio
-        profile_picture
-
-    
-    FORUM_MEMBER:
-        forum -> FORUM
-        member -> USER_PROFILE
-        is_mod
-
-
-
-
-
+FORUM_MEMBER:
+forum -> FORUM
+member -> USER_PROFILE
+is_mod
 
 what is a dashboard and what is a dashboard definition
 shared metadata across datasets
 
 categories for innovations
-    technology
-    educational
-    hiv care and treatment
-    hiv testing
+technology
+educational
+hiv care and treatment
+hiv testing
 
 check on rating
-
-
 
 have a custom authentication
 focus on the MVP
 dashboard can be one or many
 
-
-
 TODO:
+# user authentication
+# djoser
+
 crud on innovations
-user authentication
-djoser
 swagger ui
 drf-spectacular
-    https://www.youtube.com/watch?v=XBxssKYf5G0&list=PLOLrQ9Pn6cawinBJbH5d9IfloO9RRPMiq&index=25
-
-
+https://www.youtube.com/watch?v=XBxssKYf5G0&list=PLOLrQ9Pn6cawinBJbH5d9IfloO9RRPMiq&index=25
 
 curl -X POST http://127.0.0.1:8000/auth/users/ --data 'username=daniel&password=kronos12333_XD!' {"email": "dan@gmail.com", "username": "dan",}
 
+REFERENCES:
+
 USER AUTH
-    https://www.youtube.com/watch?v=lFD5uoCcvSA&list=PLJRGQoqpRwdfoa9591BcUS6NmMpZcvFsM&index=4
+https://www.youtube.com/watch?v=lFD5uoCcvSA&list=PLJRGQoqpRwdfoa9591BcUS6NmMpZcvFsM&index=4
+
+drf-spectacular
+https://www.youtube.com/watch?v=XBxssKYf5G0&list=PLOLrQ9Pn6cawinBJbH5d9IfloO9RRPMiq&index=25
