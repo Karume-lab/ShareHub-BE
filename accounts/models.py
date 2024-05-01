@@ -73,10 +73,15 @@ class UserProfile(models.Model):
     bio = models.TextField(_("Bio"))
     profile_picture = models.ImageField(
         _("Profile Picture"),
-        upload_to=f"profile_images/{user.email}",
+        upload_to=None,
         blank=True,
         null=True,
         height_field=None,
         width_field=None,
         max_length=None,
     )
+
+    def save(self, *args, **kwargs):
+        if self.user:
+            self.profile_picture.upload_to = f"profile_images/{self.user.email}"
+        super().save(*args, **kwargs)
