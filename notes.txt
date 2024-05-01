@@ -88,4 +88,8 @@ dashboard can be one or many
 TODO:
 crud on innovations
 user authentication
+djoser
+swagger ui
+drf-spectacular
+    https://www.youtube.com/watch?v=XBxssKYf5G0&list=PLOLrQ9Pn6cawinBJbH5d9IfloO9RRPMiq&index=25
 
