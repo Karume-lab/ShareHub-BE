@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
-import os
+from datetime import timedelta
 from pathlib import Path
 from decouple import config
 
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # EXTERNAL APPS
     "rest_framework",
+    "rest_framework.authtoken",
     "djoser",
     "phonenumber_field",
     # INTERNAL APPS
@@ -142,13 +143,16 @@ EMAIL_USE_TLS = True
 DJOSER = {
     "LOGIN_FIELD": "email",
     "USER_CREATE_PASSWORD_RETYPE": True,
-    "USERNAME_CHANGED_EMAIL_CONFIRMED": True,
-    "PASSWORD_CHANGED_EMAIL_CONFIRMED": True,
+    "USERNAME_CHANGED_EMAIL_CONFIRMATION": True,
+    "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
     "SEND_CONFIRMATION_EMAIL": True,
     "SET_PASSWORD_RETYPE": True,
-    "PASSWORD_RESET_CONFIRM_URL": "#/password/reset/confirm/{uid}/{token}",
-    "USERNAME_RESET_CONFIRM_URL": "#/email/reset/confirm/{uid}/{token}",
-    "ACTIVATION_URL": "#/activate/{uid}/{token}",
+    "PASSWORD_RESET_CONFIRM_RETYPE": True,
+    "PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND": True,
+    "USERNAME_RESET_SHOW_EMAIL_NOT_FOUND": True,
+    "PASSWORD_RESET_CONFIRM_URL": "password/reset/confirm/{uid}/{token}",
+    "USERNAME_RESET_CONFIRM_URL": "email/reset/confirm/{uid}/{token}",
+    "ACTIVATION_URL": "activate/{uid}/{token}",
     "SEND_ACTIVATION_EMAIL": True,
     "SERIALIZERS": {
         "user_create": "accounts.serializers.UserCreateSerializer",
@@ -168,7 +172,26 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "AUTH_HEADER_TYPES": ("JWT",),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "UPDATE_LAST_LOGIN": False,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "VERIFYING_KEY": None,
+    "AUDIENCE": None,
+    "ISSUER": None,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
+    "JTI_CLAIM": "jti",
+    "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
+    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
+    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
 }
 
 
