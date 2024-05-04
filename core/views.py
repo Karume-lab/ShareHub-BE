@@ -21,7 +21,9 @@ def innovation_list(request):
                 {"detail": "User not authenticated"},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
-        serializer = serializers.Innovation(data=request.data)
+        data = request.data.copy()
+        data["author"] = request.user.id
+        serializer = serializers.Innovation(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -50,7 +52,7 @@ def innovation_detail(request, pk):
             )
         if request.user != innovation.author:
             return Response(
-                {"detail:" "Cannot delete"}, status=status.HTTP_400_BAD_REQUEST
+                {"detail:" "Cannot update"}, status=status.HTTP_400_BAD_REQUEST
             )
         serializer = serializers.Innovation(innovation, data=request.data)
 
@@ -67,7 +69,7 @@ def innovation_detail(request, pk):
             )
         if request.user != innovation.author:
             return Response(
-                {"detail:" "Cannot delete"}, status=status.HTTP_400_BAD_REQUEST
+                {"detail:" "Cannot update"}, status=status.HTTP_400_BAD_REQUEST
             )
         serializer = serializers.Innovation(innovation, data=request.data, partial=True)
 
