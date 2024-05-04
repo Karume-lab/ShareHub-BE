@@ -8,6 +8,11 @@ from rest_framework_simplejwt.views import (
 from rest_framework import status
 from django.conf import settings
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from .models import UserProfile
+from . import serializers
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -81,3 +86,76 @@ class LogoutView(APIView):
         response.delete_cookie(settings.AUTH_COOKIE)
         response.delete_cookie(settings.AUTH_COOKIE_REFRESH)
         return response
+
+
+@api_view(["GET", "POST"])
+def user_profile_list(request):
+    """
+    List all user profiles or create a new user profile
+    """
+    if request.method == "GET":
+        profiles = UserProfile.objects.all()
+        serializer = serializers.UserProfile(profiles, many=True)
+        return Response(serializer.data)
+
+    elif request.method == "POST":
+        if not request.user.is_authenticated:
+            return Response(
+                {"detail": "User not authenticated"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+        serializer = serializers.UserProfile(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["GET", "PUT", "PATCH", "DELETE"])
+def user_profile_detail(request, pk):
+    """
+    Retrieve, update, or delete a user profile instance
+    """
+    try:
+        profile = UserProfile.objects.get(pk=pk)
+    except UserProfile.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "GET":
+        serializer = serializers.UserProfile(profile)
+        return Response(serializer.data)
+
+    elif request.method == "PUT":
+        if not request.user.is_authenticated:
+            return Response(
+                {"detail": "User not authenticated"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+        serializer = serializers.UserProfile(profile, data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == "PATCH":
+        if not request.user.is_authenticated:
+            return Response(
+                {"detail": "User not authenticated"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+        serializer = serializers.UserProfile(profile, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == "DELETE":
+        if not request.user.is_authenticated:
+            return Response(
+                {"detail": "User not authenticated"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+        profile.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
