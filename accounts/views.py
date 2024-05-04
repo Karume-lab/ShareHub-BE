@@ -104,7 +104,9 @@ def user_profile_list(request):
                 {"detail": "User not authenticated"},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
-        serializer = serializers.UserProfile(data=request.data)
+        data = request.data
+        data["user"] = request.user.id
+        serializer = serializers.UserProfile(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
