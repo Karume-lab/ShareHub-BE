@@ -50,7 +50,8 @@ def innovation_detail(request, pk):
                 {"detail": "User not authenticated"},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
-        if request.user != innovation.author:
+
+        if request.user != innovation.author.user:
             return Response(
                 {"detail:" "Cannot update"}, status=status.HTTP_400_BAD_REQUEST
             )
@@ -67,9 +68,10 @@ def innovation_detail(request, pk):
                 {"detail": "User not authenticated"},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
-        if request.user != innovation.author:
+
+        if request.user != innovation.author.user:
             return Response(
-                {"detail:" "Cannot update"}, status=status.HTTP_400_BAD_REQUEST
+                {"detail": "Cannot update"}, status=status.HTTP_400_BAD_REQUEST
             )
         serializer = serializers.Innovation(innovation, data=request.data, partial=True)
 
@@ -84,7 +86,8 @@ def innovation_detail(request, pk):
                 {"detail": "User not authenticated"},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
-        if request.user != innovation.author:
+
+        if request.user != innovation.author.user:
             return Response(
                 {"detail:" "Cannot delete"}, status=status.HTTP_400_BAD_REQUEST
             )
