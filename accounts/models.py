@@ -73,7 +73,7 @@ class UserProfile(models.Model):
     bio = models.TextField(_("Bio"))
     profile_picture = models.ImageField(
         _("Profile Picture"),
-        upload_to=None,
+        upload_to=f"media/profile_pictures",
         blank=True,
         null=True,
         height_field=None,
