@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth import get_user_model
 
 
 class Innovation(models.Model):
@@ -16,7 +15,7 @@ class Innovation(models.Model):
         ("W", "Waterborne"),
         ("O", "Other"),
     )
-    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    author = models.ForeignKey("accounts.UserProfile", on_delete=models.CASCADE)
     title = models.CharField(_("Title"), max_length=50)
     description = models.TextField(_("Description"))
     dataset = models.FileField(
@@ -30,7 +29,6 @@ class Innovation(models.Model):
     categories = models.CharField(
         _("Categories"), max_length=1, default="H", choices=CATEGORY_CHOICES
     )
-
 
     def __str__(self) -> str:
         return self.title
