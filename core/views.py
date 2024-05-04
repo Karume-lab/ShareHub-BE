@@ -21,7 +21,7 @@ def innovation_list(request):
                 {"detail": "User not authenticated"},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
-        data = request.data.copy()
+        data = request.data
         data["author"] = request.user.id
         serializer = serializers.Innovation(data=data)
         if serializer.is_valid():
