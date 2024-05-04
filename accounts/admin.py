@@ -24,4 +24,15 @@ class CustomUserAdmin(UserAdmin):
     )
 
 
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = (
+        "user",
+        "username",
+        "first_name",
+        "last_name",
+        "phone_number",
+    )
+
+
 admin.site.register(models.CustomUserModel, CustomUserAdmin)
+admin.site.register(models.UserProfile, UserProfileAdmin)
