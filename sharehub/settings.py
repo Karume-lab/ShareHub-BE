@@ -196,7 +196,7 @@ SIMPLE_JWT = {
 }
 
 
-AUTH_USER_MODEL = "accounts.CustomUserModel"
+AUTH_USER_MODEL = "accounts.CustomUser"
 
 
 # CORS
