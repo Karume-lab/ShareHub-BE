@@ -6,15 +6,17 @@ urlpatterns = [
     path(
         "jwt/create/",
         view=views.CustomTokenObtainPairView.as_view(),
-        name="token_obtain_pair",
+        name="token-obtain_pair",
     ),
     path(
         "jwt/refresh/",
         view=views.CustomTokenRefreshView.as_view(),
-        name="token_refresh",
+        name="token-refresh",
     ),
     path(
-        "jwt/verify/", view=views.CustomTokenVerifyView.as_view(), name="token_verify"
+        "jwt/verify/", view=views.CustomTokenVerifyView.as_view(), name="token-verify"
     ),
-    path("logout/", view=views.LogoutView.as_view(), name="auth_logout"),
+    path("logout/", view=views.LogoutView.as_view(), name="auth-logout"),
+    path("profiles/", views.user_profile_list, name="user-profile-list"),
+    path("profiles/<int:pk>/", views.user_profile_detail, name="user-profile-detail"),
 ]
