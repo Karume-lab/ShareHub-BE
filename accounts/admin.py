@@ -4,24 +4,45 @@ from . import models
 
 
 class CustomUserAdmin(UserAdmin):
-    list_display = ("id", "email", "is_active", "is_staff", "is_mod")
-    ordering = ("id",)
-
+    model = models.CustomUser
+    list_display = (
+        "id",
+        "email",
+        "is_staff",
+        "is_active",
+    )
+    list_filter = (
+        "email",
+        "is_staff",
+        "is_active",
+    )
     fieldsets = (
         (None, {"fields": ("email", "password")}),
         (
             "Permissions",
+            {"fields": ("is_staff", "is_active", "groups", "user_permissions")},
+        ),
+    )
+    add_fieldsets = (
+        (
+            None,
             {
+                "classes": ("wide",),
                 "fields": (
-                    "is_active",
+                    "email",
+                    "password1",
+                    "password2",
                     "is_staff",
+                    "is_active",
                     "is_mod",
                     "groups",
                     "user_permissions",
-                )
+                ),
             },
         ),
     )
+    search_fields = ("email",)
+    ordering = ("email",)
 
 
 class UserProfileAdmin(admin.ModelAdmin):
@@ -34,5 +55,5 @@ class UserProfileAdmin(admin.ModelAdmin):
     )
 
 
-admin.site.register(models.CustomUserModel, CustomUserAdmin)
+admin.site.register(models.CustomUser, CustomUserAdmin)
 admin.site.register(models.UserProfile, UserProfileAdmin)
