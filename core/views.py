@@ -1,7 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-
 from . import models
 from . import serializers
 
@@ -17,6 +16,11 @@ def innovation_list(request):
         return Response(serializer.data)
 
     elif request.method == "POST":
+        if not request.user.is_authenticated:
+            return Response(
+                {"detail": "User not authenticated"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
         serializer = serializers.Innovation(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -25,12 +29,12 @@ def innovation_list(request):
 
 
 @api_view(["GET", "PUT", "PATCH", "DELETE"])
-def innovation_detail(request, slug):
+def innovation_detail(request, pk):
     """
     Contains methods for updating an innovation (either partially or entirely) and deleting an innovation
     """
     try:
-        innovation = models.Innovation.objects.get(slug=slug)
+        innovation = models.Innovation.objects.get(pk=pk)
     except innovation.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -39,7 +43,16 @@ def innovation_detail(request, slug):
         return Response(serializer.data)
 
     elif request.method == "PUT":
-        serializer = serializers.Innovation(serializers, data=request.data)
+        if not request.user.is_authenticated:
+            return Response(
+                {"detail": "User not authenticated"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+        if request.user != innovation.author:
+            return Response(
+                {"detail:" "Cannot delete"}, status=status.HTTP_400_BAD_REQUEST
+            )
+        serializer = serializers.Innovation(innovation, data=request.data)
 
         if serializer.is_valid():
             serializer.save()
@@ -47,9 +60,16 @@ def innovation_detail(request, slug):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == "PATCH":
-        serializer = serializers.Innovation(
-            serializers, data=request.data, partial=True
-        )
+        if not request.user.is_authenticated:
+            return Response(
+                {"detail": "User not authenticated"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+        if request.user != innovation.author:
+            return Response(
+                {"detail:" "Cannot delete"}, status=status.HTTP_400_BAD_REQUEST
+            )
+        serializer = serializers.Innovation(innovation, data=request.data, partial=True)
 
         if serializer.is_valid():
             serializer.save()
@@ -57,5 +77,14 @@ def innovation_detail(request, slug):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == "DELETE":
+        if not request.user.is_authenticated:
+            return Response(
+                {"detail": "User not authenticated"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+        if request.user != innovation.author:
+            return Response(
+                {"detail:" "Cannot delete"}, status=status.HTTP_400_BAD_REQUEST
+            )
         innovation.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
