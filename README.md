@@ -5,7 +5,7 @@
 **1. Clone the Repo:**
 
 ```bash
-git clone [https://github.com/Karume-lab/ShareHub-BE](https://github.com/Karume-lab/ShareHub-BE)
+git clone https://github.com/Karume-lab/ShareHub-BE
 ```
 
 **2. Create a Virtual Environment:**
