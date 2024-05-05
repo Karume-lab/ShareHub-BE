@@ -15,7 +15,9 @@ class Innovation(models.Model):
         ("W", "Waterborne"),
         ("O", "Other"),
     )
-    author = models.ForeignKey("accounts.UserProfile", on_delete=models.CASCADE)
+    author = models.ForeignKey(
+        "accounts.UserProfile", on_delete=models.CASCADE, related_name="innovations"
+    )
     title = models.CharField(_("Title"), max_length=50)
     description = models.TextField(_("Description"))
     dataset = models.FileField(
@@ -26,8 +28,8 @@ class Innovation(models.Model):
     status = models.CharField(
         _("Status"), max_length=2, default="P", choices=STATUS_CHOICES
     )
-    categories = models.CharField(
-        _("Categories"), max_length=1, default="H", choices=CATEGORY_CHOICES
+    category = models.CharField(
+        _("Category"), max_length=1, default="H", choices=CATEGORY_CHOICES
     )
 
     def __str__(self) -> str:

@@ -11,8 +11,10 @@ def innovation_list(request):
     List all innovations, or create a new innovation
     """
     if request.method == "GET":
-        innovation = models.Innovation.objects.all()
-        serializer = serializers.Innovation(innovation, many=True)
+        innovations = models.Innovation.objects.all()
+        serializer = serializers.Innovation(
+            innovations, many=True, context={"request": request}
+        )
         return Response(serializer.data)
 
     elif request.method == "POST":
@@ -23,7 +25,7 @@ def innovation_list(request):
             )
         data = request.data
         data["author"] = request.user.id
-        serializer = serializers.Innovation(data=data)
+        serializer = serializers.Innovation(data=data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -37,11 +39,11 @@ def innovation_detail(request, pk):
     """
     try:
         innovation = models.Innovation.objects.get(pk=pk)
-    except innovation.DoesNotExist:
+    except models.Innovation.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
-        serializer = serializers.Innovation(innovation)
+        serializer = serializers.Innovation(innovation, context={"request": request})
         return Response(serializer.data)
 
     elif request.method == "PUT":
@@ -55,7 +57,9 @@ def innovation_detail(request, pk):
             return Response(
                 {"detail:" "Cannot update"}, status=status.HTTP_400_BAD_REQUEST
             )
-        serializer = serializers.Innovation(innovation, data=request.data)
+        serializer = serializers.Innovation(
+            innovation, data=request.data, context={"request": request}
+        )
 
         if serializer.is_valid():
             serializer.save()
@@ -73,7 +77,9 @@ def innovation_detail(request, pk):
             return Response(
                 {"detail": "Cannot update"}, status=status.HTTP_400_BAD_REQUEST
             )
-        serializer = serializers.Innovation(innovation, data=request.data, partial=True)
+        serializer = serializers.Innovation(
+            innovation, data=request.data, partial=True, context={"request": request}
+        )
 
         if serializer.is_valid():
             serializer.save()

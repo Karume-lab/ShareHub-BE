@@ -1,6 +1,5 @@
 from djoser.serializers import UserCreateSerializer
 from rest_framework import serializers
-from core import serializers as core_ser
 from . import models
 
 
@@ -10,7 +9,20 @@ class UserCreateSerializer(UserCreateSerializer):
         fields = ("id", "email", "password")
 
 
-class UserProfile(serializers.ModelSerializer):
+class UserProfile(serializers.HyperlinkedModelSerializer):
+    innovations = serializers.HyperlinkedRelatedField(
+        many=True, read_only=True, view_name="innovation-detail"
+    )
+
     class Meta:
         model = models.UserProfile
-        fields = "__all__"
+        fields = (
+            "url",
+            "id",
+            "first_name",
+            "last_name",
+            "phone_number",
+            "bio",
+            "profile_picture",
+            "innovations",
+        )

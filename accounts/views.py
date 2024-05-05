@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .models import UserProfile
+from . import models
 from . import serializers
 
 
@@ -94,8 +94,10 @@ def user_profile_list(request):
     List all user profiles or create a new user profile
     """
     if request.method == "GET":
-        profiles = UserProfile.objects.all()
-        serializer = serializers.UserProfile(profiles, many=True)
+        profiles = models.UserProfile.objects.all()
+        serializer = serializers.UserProfile(
+            profiles, many=True, context={"request": request}
+        )
         return Response(serializer.data)
 
     elif request.method == "POST":
@@ -106,7 +108,7 @@ def user_profile_list(request):
             )
         data = request.data
         data["user"] = request.user.id
-        serializer = serializers.UserProfile(data=data)
+        serializer = serializers.UserProfile(data=data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -119,12 +121,12 @@ def user_profile_detail(request, pk):
     Retrieve, update, or delete a user profile instance
     """
     try:
-        profile = UserProfile.objects.get(pk=pk)
-    except UserProfile.DoesNotExist:
+        profile = models.UserProfile.objects.get(pk=pk)
+    except models.UserProfile.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
-        serializer = serializers.UserProfile(profile)
+        serializer = serializers.UserProfile(profile, context={"request": request})
         return Response(serializer.data)
 
     elif request.method == "PUT":
@@ -133,7 +135,9 @@ def user_profile_detail(request, pk):
                 {"detail": "User not authenticated"},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
-        serializer = serializers.UserProfile(profile, data=request.data)
+        serializer = serializers.UserProfile(
+            profile, data=request.data, context={"request": request}
+        )
 
         if serializer.is_valid():
             serializer.save()
@@ -146,7 +150,9 @@ def user_profile_detail(request, pk):
                 {"detail": "User not authenticated"},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
-        serializer = serializers.UserProfile(profile, data=request.data, partial=True)
+        serializer = serializers.UserProfile(
+            profile, data=request.data, partial=True, context={"request": request}
+        )
 
         if serializer.is_valid():
             serializer.save()
