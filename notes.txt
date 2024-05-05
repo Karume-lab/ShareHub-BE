@@ -74,19 +74,24 @@ focus on the MVP
 dashboard can be one or many
 
 TODO:
+fetch user information with the user profile
+add in comments
+
+tinker with the different types of serializers
+
+
 # user authentication
 # djoser
 
 # protect endpoints
 # swagger ui
-using cookies
+# using cookies
 
-crud on innovations
-swagger ui
-drf-spectacular
+# crud on innovations
+# swagger ui
+# drf-spectacular
 https://www.youtube.com/watch?v=XBxssKYf5G0&list=PLOLrQ9Pn6cawinBJbH5d9IfloO9RRPMiq&index=25
 
-curl -X POST http://127.0.0.1:8000/auth/users/ --data 'username=daniel&password=q1w2e3r4t5y6!' {"email": "dan@gmail.com", "username": "dan",}
 
 REFERENCES:
 
