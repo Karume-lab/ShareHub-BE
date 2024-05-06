@@ -8,13 +8,14 @@ from rest_framework_simplejwt.views import (
 from rest_framework import status
 from django.conf import settings
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.decorators import api_view
 from . import models
 from . import serializers
 from core import models as core_models
 from core import serializers as core_serializers
+from utils import main
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -97,10 +98,8 @@ def user_profile_list(request):
     """
     if request.method == "GET":
         profiles = models.UserProfile.objects.all()
-        serializer = serializers.UserProfile(
-            profiles, many=True, context={"request": request}
-        )
-        return Response(serializer.data)
+        paginated_response = main.paginate(request, profiles, serializers.UserProfile)
+        return paginated_response
 
 
 @api_view(["GET", "PUT", "PATCH", "DELETE"])
@@ -167,8 +166,8 @@ def user_innovation_list(request, pk):
                 {"detail": "User does not exist"}, status=status.HTTP_404_NOT_FOUND
             )
         innovations = core_models.Innovation.objects.filter(author__user=user)
-        serializer = core_serializers.Innovation(
-            innovations, many=True, context={"request": request}
+        paginated_response = main.paginate(
+            request, innovations, core_serializers.Innovation
         )
-        return Response(serializer.data)
+        return paginated_response
     return Response({"detail": "Bad request"}, status=status.HTTP_400_BAD_REQUEST)
