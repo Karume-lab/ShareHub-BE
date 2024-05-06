@@ -46,6 +46,7 @@ class UserProfile(models.Model):
         CustomUser, verbose_name=_("User"), on_delete=models.CASCADE
     )
     username = models.CharField(max_length=50)
+    email = models.EmailField(_("Email"), max_length=254)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     phone_number = PhoneNumberField(blank=True)

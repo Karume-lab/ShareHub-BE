@@ -1,5 +1,7 @@
 from django.urls import path, include
 from . import views
+from . import signals
+
 
 urlpatterns = [
     path("", include("djoser.urls")),
