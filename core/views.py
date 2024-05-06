@@ -32,8 +32,6 @@ def innovation_list(request):
             pk=request.user.user_profile.pk
         )
         data["author"] = user_profile.pk
-        print("\n\n\n", data, "\n\n\n")
-        # return Response({})
         serializer = serializers.Innovation(data=data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
