@@ -106,3 +106,17 @@ https://www.youtube.com/watch?v=XBxssKYf5G0&list=PLOLrQ9Pn6cawinBJbH5d9IfloO9RRP
 
 FUNCTION BASED API VIEWS
 https://www.geeksforgeeks.org/function-based-views-django-rest-framework/
+
+
+MENTOR INSIGHTS:
+superset
+    dashboards
+    display the dashboard from the site:
+        link or the file
+
+set up super set
+reset email endpoint
+username field updating
+
+
+superset apis
