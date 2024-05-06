@@ -1,10 +1,11 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.pagination import PageNumberPagination
 from . import models
 from accounts import models as accounts_models
 from . import serializers
+from . import utils
+
 
 
 @api_view(["GET", "POST"])
@@ -13,13 +14,9 @@ def innovation_list(request):
     List all innovations, or create a new innovation
     """
     if request.method == "GET":
-        paginator = PageNumberPagination()
         innovations = models.Innovation.objects.all()
-        results_page = paginator.paginate_queryset(innovations, request=request)
-        serializer = serializers.Innovation(
-            results_page, many=True, context={"request": request}
-        )
-        return paginator.get_paginated_response(serializer.data)
+        paginated_response = utils.paginate(request, innovations, serializers.Innovation)
+        return paginated_response
 
     elif request.method == "POST":
         if not request.user.is_authenticated:
