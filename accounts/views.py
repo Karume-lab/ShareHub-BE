@@ -13,6 +13,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from . import models
 from . import serializers
+from core import models as core_models
+from core import serializers as core_serializers
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -153,3 +155,20 @@ def user_profile_detail(request, pk):
             )
         profile.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(["GET"])
+def user_innovation_list(request, pk):
+    if request.method == "GET":
+        try:
+            user = models.CustomUser.objects.get(pk=pk)
+        except models.CustomUser.DoesNotExist:
+            return Response(
+                {"detail": "User does not exist"}, status=status.HTTP_404_NOT_FOUND
+            )
+        innovations = core_models.Innovation.objects.filter(author__user=user)
+        serializer = core_serializers.Innovation(
+            innovations, many=True, context={"request": request}
+        )
+        return Response(serializer.data)
+    return Response({"detail": "Bad request"}, status=status.HTTP_400_BAD_REQUEST)

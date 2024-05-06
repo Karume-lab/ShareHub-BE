@@ -10,7 +10,7 @@ class UserCreateSerializer(UserCreateSerializer):
 
 
 class UserProfile(serializers.HyperlinkedModelSerializer):
-    email = serializers.StringRelatedField()
+    email = serializers.StringRelatedField(read_only=True)
     innovations = serializers.HyperlinkedRelatedField(
         many=True, read_only=True, view_name="innovation-detail"
     )
@@ -27,4 +27,17 @@ class UserProfile(serializers.HyperlinkedModelSerializer):
             "bio",
             "profile_picture",
             "innovations",
+        )
+
+
+class Author(serializers.ModelSerializer):
+    class Meta:
+        model = models.UserProfile
+        fields = (
+            "id",
+            "email",
+            "first_name",
+            "last_name",
+            "username",
+            "profile_picture",
         )

@@ -43,7 +43,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(
-        CustomUser, verbose_name=_("User"), on_delete=models.CASCADE
+        CustomUser, verbose_name=_("User"),  related_name="user_profile",on_delete=models.CASCADE
     )
     username = models.CharField(max_length=50)
     email = models.EmailField(_("Email"), max_length=254)
