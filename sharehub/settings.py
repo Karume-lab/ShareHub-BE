@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "djoser",
     "phonenumber_field",
     "drf_yasg",
+    "corsheaders",
     # INTERNAL APPS
     "accounts",
     "core",
@@ -58,6 +59,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    #cors headers middlewear
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
 
 ROOT_URLCONF = "sharehub.urls"
@@ -151,9 +155,9 @@ DJOSER = {
     "PASSWORD_RESET_CONFIRM_RETYPE": True,
     "PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND": True,
     "USERNAME_RESET_SHOW_EMAIL_NOT_FOUND": True,
-    "PASSWORD_RESET_CONFIRM_URL": "password-reset-confirm/{uid}/{token}",
-    "USERNAME_RESET_CONFIRM_URL": "username-reset-confirm/{uid}/{token}",
-    "ACTIVATION_URL": "activate/{uid}/{token}",
+    "PASSWORD_RESET_CONFIRM_URL": "auth/password-reset-confirm/{uid}/{token}",
+    "USERNAME_RESET_CONFIRM_URL": "auth/username-reset-confirm/{uid}/{token}",
+    "ACTIVATION_URL": "auth/activate/{uid}/{token}",
     "SEND_ACTIVATION_EMAIL": True,
     "SERIALIZERS": {
         "user_create": "accounts.serializers.UserCreateSerializer",
@@ -164,6 +168,7 @@ DJOSER = {
 }
 
 DOMAIN = "localhost:3000"
+SITE_NAME = "Sharehub"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
