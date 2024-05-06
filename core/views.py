@@ -4,7 +4,7 @@ from rest_framework import status
 from . import models
 from accounts import models as accounts_models
 from . import serializers
-from . import utils
+from utils import main
 
 
 @api_view(["GET", "POST"])
@@ -14,7 +14,7 @@ def innovation_list(request):
     """
     if request.method == "GET":
         innovations = models.Innovation.objects.all()
-        paginated_response = utils.paginate(
+        paginated_response = main.paginate(
             request, innovations, serializers.Innovation
         )
         return paginated_response
