@@ -57,4 +57,46 @@ python manage.py runserver
 Navigate to either of these URLs:
 
 - [Swagger Documentation](http://127.0.0.1:8000/swagger/)
-- [Redoc Documentation](http://127.0.0.1:8000/redoc/)
+- [Redoc Documentation](http://127.0.0.1:8000/redoc/)\*\*\*\*
+
+## UPDATING YOUR CLONE
+
+**1. Pulling remote changes:**
+
+Go to your local repository and make sure you are on the `main` branch, then run:
+
+```bash
+git pull
+```
+
+**2. Activate Virtual Environment:**
+
+**- Linux:**
+
+```bash
+source ./venv/bin/activate
+```
+
+**- Windows:**
+
+```bash
+venv\Scripts\activate
+```
+
+**3. Install new Packages:**
+
+```bash
+pip install -r requirements.txt
+```
+
+**4. Make Migrations:**
+
+```bash
+python manage.py makemigrations && python manage.py migrate
+```
+
+**5. Run the Server:**
+
+```bash
+python manage.py runserver
+```
