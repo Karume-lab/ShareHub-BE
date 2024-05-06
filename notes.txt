@@ -74,9 +74,10 @@ focus on the MVP
 dashboard can be one or many
 
 TODO:
+status for innovations
 pagination
-get innovations for specific user
-fetch user information with the user profile
+# get innovations for specific user
+# fetch user information with the user profile
 add in comments
 
 tinker with the different types of serializers
