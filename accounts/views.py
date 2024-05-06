@@ -171,3 +171,19 @@ def user_innovation_list(request, pk):
         )
         return paginated_response
     return Response({"detail": "Bad request"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["GET"])
+def me_user_profile(request):
+    if request.method == "GET":
+        try:
+            profile = models.UserProfile.objects.get(user=request.user)
+        except models.UserProfile.DoesNotExist:
+            return Response(
+                {"detail": "User profile does not exist"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+        serializer = serializers.UserProfile(profile, context={"request": request})
+        return Response(serializer.data)
+
+    return Response({"detail": "Bad request"}, status=status.HTTP_400_BAD_REQUEST)
