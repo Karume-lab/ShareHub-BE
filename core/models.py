@@ -16,7 +16,9 @@ class Innovation(models.Model):
         ("O", "Other"),
     )
     author = models.ForeignKey(
-        "accounts.UserProfile", on_delete=models.CASCADE, related_name="innovations"
+        "accounts.UserProfile",
+        on_delete=models.CASCADE,
+        related_name="innovations",
     )
     title = models.CharField(_("Title"), max_length=50)
     description = models.TextField(_("Description"))
