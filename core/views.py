@@ -7,7 +7,6 @@ from . import serializers
 from . import utils
 
 
-
 @api_view(["GET", "POST"])
 def innovation_list(request):
     """
@@ -15,7 +14,9 @@ def innovation_list(request):
     """
     if request.method == "GET":
         innovations = models.Innovation.objects.all()
-        paginated_response = utils.paginate(request, innovations, serializers.Innovation)
+        paginated_response = utils.paginate(
+            request, innovations, serializers.Innovation
+        )
         return paginated_response
 
     elif request.method == "POST":
