@@ -91,7 +91,7 @@ class LogoutView(APIView):
 @api_view(["GET", "POST"])
 def user_profile_list(request):
     """
-    List all user profiles or create a new user profile
+    List all user profiles
     """
     if request.method == "GET":
         profiles = models.UserProfile.objects.all()
@@ -99,20 +99,6 @@ def user_profile_list(request):
             profiles, many=True, context={"request": request}
         )
         return Response(serializer.data)
-
-    elif request.method == "POST":
-        if not request.user.is_authenticated:
-            return Response(
-                {"detail": "User not authenticated"},
-                status=status.HTTP_401_UNAUTHORIZED,
-            )
-        data = request.data
-        data["user"] = request.user.id
-        serializer = serializers.UserProfile(data=data, context={"request": request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET", "PUT", "PATCH", "DELETE"])
