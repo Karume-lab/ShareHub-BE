@@ -17,3 +17,23 @@ class Innovation(serializers.ModelSerializer):
             "status",
             "category",
         )
+
+
+class BaseComment(serializers.ModelSerializer):
+    author = accounts_serializers.Author()
+
+    class Meta:
+        model = models.BaseComment
+        fields = ("author", "text", "created_at", "updated_at", "likes")
+        read_only_fields = ("created_at", "updated_at", "likes")
+
+
+class InnovationComment(serializers.ModelSerializer):
+    innovation = serializers.PrimaryKeyRelatedField(
+        queryset=models.Innovation.objects.all()
+    )
+    author = accounts_serializers.Author()
+
+    class Meta:
+        model = models.InnovationComment
+        fields = ("innovation",) + BaseComment.Meta.fields
