@@ -14,9 +14,7 @@ def innovation_list(request):
     """
     if request.method == "GET":
         innovations = models.Innovation.objects.all()
-        paginated_response = main.paginate(
-            request, innovations, serializers.Innovation
-        )
+        paginated_response = main.paginate(request, innovations, serializers.Innovation)
         return paginated_response
 
     elif request.method == "POST":
@@ -104,3 +102,23 @@ def innovation_detail(request, pk):
             )
         innovation.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(["GET", "POST"])
+def innovation_comment_list(request, pk):
+    """
+    List all comments for a specific innovation, or create a comment for an innovation
+    """
+    if request.method == "GET":
+        comments = models.InnovationComment.objects.filter(innovation_id=pk)
+        serializer = serializers.InnovationComment(
+            comments, many=True, context={"request": request}
+        )
+        return Response(serializer.data)
+
+    elif request.method == "POST":
+        serializer = serializers.InnovationComment(data=request.data)
+        if serializer.is_valid():
+            serializer.save(pk=pk)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
