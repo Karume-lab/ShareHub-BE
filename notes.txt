@@ -39,7 +39,6 @@ category
 COMMENT:
 author -> USER_PROFILE
 innovation -> USER_PROFILE
-rating
 is_edited
 created_at
 updated_at
@@ -74,8 +73,10 @@ focus on the MVP
 dashboard can be one or many
 
 TODO:
+how to fetch related fields together
+serializers explanation
 status for innovations
-pagination
+# pagination
 # get innovations for specific user
 # fetch user information with the user profile
 add in comments
@@ -114,9 +115,9 @@ superset
     display the dashboard from the site:
         link or the file
 
-set up super set
-reset email endpoint
-username field updating
+# set up super set
+# reset email endpoint
+# username field updating
 
 
 superset apis
