@@ -33,7 +33,7 @@ class Innovation(models.Model):
     category = models.CharField(
         _("Category"), max_length=1, default="H", choices=CATEGORY_CHOICES
     )
-    likes = models.IntegerField(_("Likes"))
+    likes = models.IntegerField(_("Likes"), default=0)
 
     def __str__(self) -> str:
         return self.title
@@ -51,7 +51,8 @@ class BaseComment(models.Model):
     text = models.TextField(_("Comment"))
     created_at = models.DateTimeField(_("Date created"), auto_now_add=True)
     updated_at = models.DateTimeField(_("Date updated"), auto_now=True)
-    likes = models.IntegerField(_("Likes"))
+    is_edited = models.BooleanField(_("Is edited"), default=False)
+    likes = models.IntegerField(_("Likes"), default=0)
 
     class Meta:
         abstract = True
