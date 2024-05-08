@@ -120,11 +120,15 @@ def innovation_comment_list(request, pk):
                 {"detail": "User not authenticated"},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
-        request.data["innovation"] = pk
-        request.data["author"] = request.user.user_profile.pk
-        serializer = serializers.InnovationComment(data=request.data)
+        request.data["innovation"] = models.Innovation.objects.get(id=pk).pk
+
+        serializer = serializers.InnovationComment(
+            data=request.data, context={"request": request}
+        )
+
         if serializer.is_valid():
-            serializer.save(innovation_id=pk)
+            serializer.validated_data["author"] = request.user.user_profile
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -137,7 +141,7 @@ def innovation_comment_detail(request, pk):
     try:
         innovation_comment = models.InnovationComment.objects.get(pk=pk)
     except models.InnovationComment.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response({"detail": "Comment does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
         serializer = serializers.InnovationComment(
