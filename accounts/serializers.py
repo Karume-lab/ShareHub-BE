@@ -6,12 +6,14 @@ from . import models
 class UserCreateSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
         model = models.CustomUser
-        fields = ("id", "email", "password")
+        fields = (
+            "id",
+            "email",
+            "password",
+        )
 
 
-class UserProfile(serializers.HyperlinkedModelSerializer):
-    email = serializers.StringRelatedField(read_only=True)
-
+class UserProfile(serializers.ModelSerializer):
     class Meta:
         model = models.UserProfile
         fields = (
