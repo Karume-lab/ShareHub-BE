@@ -8,6 +8,11 @@ urlpatterns = [
     path(
         "innovations/<int:pk>/comments/",
         views.innovation_comment_list,
-        name="innovationcomments-list",
+        name="innovationcomment-list",
+    ),
+    path(
+        "comments/<int:pk>/",
+        views.innovation_comment_detail,
+        name="innovationcomment-detail",
     ),
 ]
