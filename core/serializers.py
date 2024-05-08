@@ -35,6 +35,7 @@ class InnovationComment(serializers.ModelSerializer):
     innovation = serializers.PrimaryKeyRelatedField(
         queryset=models.Innovation.objects.all()
     )
+    author = accounts_serializers.Author(read_only=True)
 
     class Meta:
         model = models.InnovationComment
