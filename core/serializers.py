@@ -4,6 +4,8 @@ from . import models
 
 
 class Innovation(serializers.ModelSerializer):
+    author = accounts_serializers.Author(read_only=True)
+
     class Meta:
         model = models.Innovation
         fields = (
@@ -16,6 +18,7 @@ class Innovation(serializers.ModelSerializer):
             "updated_at",
             "status",
             "category",
+            "likes",
         )
 
 
@@ -32,8 +35,10 @@ class InnovationComment(serializers.ModelSerializer):
     innovation = serializers.PrimaryKeyRelatedField(
         queryset=models.Innovation.objects.all()
     )
-    author = accounts_serializers.Author()
 
     class Meta:
         model = models.InnovationComment
-        fields = ("innovation",) + BaseComment.Meta.fields
+        fields = (
+            "innovation",
+            "author",
+        ) + BaseComment.Meta.fields
