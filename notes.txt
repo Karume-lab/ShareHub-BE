@@ -73,8 +73,9 @@ focus on the MVP
 dashboard can be one or many
 
 TODO:
-how to fetch related fields together
+# how to fetch related fields together
 serializers explanation
+comments detail?
 status for innovations
 # pagination
 # get innovations for specific user
