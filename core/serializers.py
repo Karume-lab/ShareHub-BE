@@ -13,22 +13,13 @@ class Innovation(serializers.ModelSerializer):
             "title",
             "author",
             "description",
-            "dataset",
+            "dashboard_link",
+            "dashboard_image",
             "created_at",
             "updated_at",
             "status",
             "category",
-            "likes",
         )
-
-
-class BaseComment(serializers.ModelSerializer):
-    author = accounts_serializers.Author()
-
-    class Meta:
-        model = models.BaseComment
-        fields = ("author", "text", "created_at", "updated_at", "likes")
-        read_only_fields = ("created_at", "updated_at", "likes")
 
 
 class InnovationComment(serializers.ModelSerializer):
@@ -42,4 +33,8 @@ class InnovationComment(serializers.ModelSerializer):
         fields = (
             "innovation",
             "author",
-        ) + BaseComment.Meta.fields
+            "text",
+            "created_at",
+            "updated_at",
+            "likes",
+        )
