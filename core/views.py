@@ -35,6 +35,16 @@ def innovation_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(["GET"])
+def innovation_zip(request, pk):
+    try:
+        innovation = models.Innovation.objects.get(pk=pk)
+    except models.Innovation.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    serializer = serializers.InnovationZipFile(innovation, context={"request": request})
+    return Response(serializer.data)
+
+
 @api_view(["GET", "PUT", "PATCH", "DELETE"])
 @permission_classes([AllowAny])
 def innovation_detail(request, pk):

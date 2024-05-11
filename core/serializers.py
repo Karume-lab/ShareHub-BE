@@ -45,6 +45,13 @@ class Innovation(serializers.ModelSerializer):
         return is_bookmarked
 
 
+class InnovationZipFile(serializers.ModelSerializer):
+    class Meta:
+        model = models.Innovation
+        fields = ("dashboard_definition",)
+        read_only_fields = ("dashboard_definition",)
+
+
 class Like(serializers.ModelSerializer):
     author = accounts_serializers.Author(read_only=True)
 
