@@ -91,37 +91,55 @@ def innovation_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(["POST"])
-def like_innovation(request, pk):
+@api_view(["GET", "POST"])
+@permission_classes([AllowAny])
+def innovation_like_list(request, pk):
+    """
+    List all likes for an innovation, or like an innovation
+    """
     try:
         innovation = models.Innovation.objects.get(pk=pk)
     except models.Innovation.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    innovation_serialized_data = serializers.Innovation(
-        innovation, context={"request": request}
-    ).data
+    if request.method == "GET":
 
-    if innovation_serialized_data["is_liked"]:
-        return Response(
-            {"detail": "You already liked this innovation"},
-            status=status.HTTP_400_BAD_REQUEST,
-        )
-    else:
-        innovation.likes_number += 1
-        innovation.save()
-        serializer = serializers.Like(data=request.data, context={"request": request})
+        likes = models.Like.objects.filter(innovation=innovation)
+        paginated_response = main.paginate(request, likes, serializers.Like)
+        return paginated_response
 
-        if serializer.is_valid():
-            serializer.validated_data["author"] = request.user.user_profile
-            serializer.validated_data["innovation"] = innovation
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == "POST":
+        if not request.user.is_authenticated:
+            return Response(
+                {"detail": "Authentication credentials were not provided."},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+        innovation_serialized_data = serializers.Innovation(
+            innovation, context={"request": request}
+        ).data
+
+        if innovation_serialized_data["is_liked"]:
+            return Response(
+                {"detail": "You already liked this innovation"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        else:
+            innovation.likes_number += 1
+            innovation.save()
+            serializer = serializers.Like(
+                data=request.data, context={"request": request}
+            )
+
+            if serializer.is_valid():
+                serializer.validated_data["author"] = request.user.user_profile
+                serializer.validated_data["innovation"] = innovation
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["DELETE"])
-def unlike_innovation(request, pk):
+def innovation_like_detail(request, pk):
     try:
         innovation = models.Innovation.objects.get(pk=pk)
     except models.Innovation.DoesNotExist:

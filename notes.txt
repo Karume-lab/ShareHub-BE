@@ -76,16 +76,16 @@ TODO:
 innovations/
     # is_liked
     # is_bookmarked
+    # number of likes
     number of comments
-    number of likes
 
 profiles urls accounts
 
 innovations/id/export/
     the file
 
-innovations/id/like/
-innovations/id/unlike/
+# innovations/id/like/
+# innovations/id/unlike/
 innovations/id/bookmark/
 innovations/id/unbookmark/
 innovations/id/comments/
@@ -98,10 +98,10 @@ search url
 
 CRUD innovations
 CRUD comments
-likes
-user profile
+# likes
+# user profile
 
-likes models
+# likes models
 comments
 
 # permissions

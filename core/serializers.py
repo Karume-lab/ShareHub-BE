@@ -46,6 +46,8 @@ class Innovation(serializers.ModelSerializer):
 
 
 class Like(serializers.ModelSerializer):
+    author = accounts_serializers.Author(read_only=True)
+
     class Meta:
         model = models.Like
         fields = (

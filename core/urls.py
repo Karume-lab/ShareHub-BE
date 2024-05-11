@@ -16,11 +16,15 @@ urlpatterns = [
         views.unbookmark_innovation,
         name="unbookmark_innovation",
     ),
-    path("innovations/<int:pk>/like/", views.like_innovation, name="like_innovation"),
+    path(
+        "innovations/<int:pk>/likes/",
+        views.innovation_like_list,
+        name="innovation_like-list",
+    ),
     path(
         "innovations/<int:pk>/unlike/",
-        views.unlike_innovation,
-        name="unlike_innovation",
+        views.innovation_like_detail,
+        name="innovation_like-detail",
     ),
     path(
         "innovations/<int:pk>/comments/",
