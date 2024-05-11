@@ -28,5 +28,15 @@ urlpatterns = [
         views.user_innovation_list,
         name="userinnovation-list",
     ),
+    path(
+        "profiles/<int:pk>/bookmarks/",
+        views.user_bookmark_list,
+        name="userbookmark-list",
+    ),
+    path(
+        "profiles/<int:pk>/likes/",
+        views.user_like_list,
+        name="userlike-list",
+    ),
     path("profiles/me/", views.me_user_profile, name="userprofile-detail"),
 ]

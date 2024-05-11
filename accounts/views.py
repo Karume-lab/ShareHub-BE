@@ -155,23 +155,6 @@ def user_profile_detail(request, pk):
 
 
 @api_view(["GET"])
-def user_innovation_list(request, pk):
-    if request.method == "GET":
-        try:
-            user = models.CustomUser.objects.get(pk=pk)
-        except models.CustomUser.DoesNotExist:
-            return Response(
-                {"detail": "User does not exist"}, status=status.HTTP_404_NOT_FOUND
-            )
-        innovations = core_models.Innovation.objects.filter(author__user=user)
-        paginated_response = main.paginate(
-            request, innovations, core_serializers.Innovation
-        )
-        return paginated_response
-    return Response({"detail": "Bad request"}, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def me_user_profile(request):
     if request.method == "GET":
@@ -185,3 +168,44 @@ def me_user_profile(request):
         serializer = serializers.UserProfile(profile, context={"request": request})
         return Response(serializer.data)
     return Response({"detail": "Bad request"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["GET"])
+def user_innovation_list(request, pk):
+    try:
+        user = models.UserProfile.objects.get(pk=pk)
+    except models.UserProfile.DoesNotExist:
+        return Response(
+            {"detail": "User does not exist"}, status=status.HTTP_404_NOT_FOUND
+        )
+    innovations = core_models.Innovation.objects.filter(author__user=user)
+    paginated_response = main.paginate(
+        request, innovations, core_serializers.Innovation
+    )
+    return paginated_response
+
+
+@api_view(["GET"])
+def user_bookmark_list(request, pk):
+    try:
+        user = models.UserProfile.objects.get(pk=pk)
+    except models.UserProfile.DoesNotExist:
+        return Response(
+            {"detail": "User does not exist"}, status=status.HTTP_404_NOT_FOUND
+        )
+    bookmarks = core_models.Bookmark.objects.filter(user=user)
+    paginated_response = main.paginate(request, bookmarks, core_serializers.Bookmark)
+    return paginated_response
+
+@api_view(["GET"])
+def user_like_list(request, pk):
+    try:
+        user = models.UserProfile.objects.get(pk=pk)
+    except models.UserProfile.DoesNotExist:
+        return Response(
+            {"detail": "User does not exist"}, status=status.HTTP_404_NOT_FOUND
+        )
+    likes = core_models.Like.objects.filter(user=user)
+    print(likes)
+    paginated_response = main.paginate(request, likes, core_serializers.Like)
+    return paginated_response
