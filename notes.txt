@@ -74,8 +74,8 @@ hiv testing
 
 TODO:
 innovations/
-    is_liked
-    is_bookmarked
+    # is_liked
+    # is_bookmarked
     number of comments
     number of likes
 

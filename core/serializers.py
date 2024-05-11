@@ -46,7 +46,6 @@ class Like(serializers.ModelSerializer):
     class Meta:
         model = models.Like
         fields = (
-            "url",
             "author",
             "innovation",
         )

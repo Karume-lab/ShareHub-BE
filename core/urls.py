@@ -6,7 +6,11 @@ urlpatterns = [
     path("innovations/", views.innovation_list, name="innovation-list"),
     path("innovations/bookmarks/", views.bookmarks, name="bookmarks-list"),
     path("innovations/<int:pk>/", views.innovation_detail, name="innovation-detail"),
-    path("innovations/<int:pk>/bookmark/", views.bookmark_innovation, name="bookmark_innovation"),
+    path(
+        "innovations/<int:pk>/bookmark/",
+        views.bookmark_innovation,
+        name="bookmark_innovation",
+    ),
     path(
         "innovations/<int:pk>/unbookmark/",
         views.unbookmark_innovation,

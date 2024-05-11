@@ -98,21 +98,27 @@ def like_innovation(request, pk):
     except models.Innovation.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    request.data["author"] = request.user.user_profile
-    request.data["innovation"] = models.Innovation.objects.get(pk=pk).pk
-    print(request.data)
-    # return Response({})
-    serializer = serializers.Like(data=request.data, context={"request": request})
+    innovation_serialized_data = serializers.Innovation(
+        innovation, context={"request": request}
+    ).data
 
-    if serializer.is_valid():
-        serializer.validated_data["author"] = request.user.user_profile
-        serializer.save()
-        return Response({serializer.data})
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    if innovation_serialized_data["is_liked"]:
+        return Response({"detail": "You already liked this innovation"}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        innovation.likes_number += 1
+        serializer = serializers.Like(data=request.data, context={"request": request})
+
+        if serializer.is_valid():
+            serializer.validated_data["author"] = request.user.user_profile
+            serializer.validated_data["innovation"] = innovation
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 def unlike_innovation(request):
-    pass
+    print("Hi")
+    return Response({})
 
 
 def bookmark_innovation(request):
