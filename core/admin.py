@@ -7,8 +7,23 @@ class InnovationAdmin(admin.ModelAdmin):
 
 
 class InnovationCommentAdmin(admin.ModelAdmin):
-    list_display = ("id", "author", "text", "created_at", "updated_at", "likes")
+    list_display = (
+        "id",
+        "author",
+        "text",
+        "created_at",
+        "updated_at",
+    )
+
+
+class LikeAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "author",
+        "innovation",
+    )
 
 
 admin.site.register(models.Innovation, InnovationAdmin)
 admin.site.register(models.InnovationComment, InnovationCommentAdmin)
+admin.site.register(models.Like, LikeAdmin)
