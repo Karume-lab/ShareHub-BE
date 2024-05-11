@@ -60,6 +60,22 @@ class Like(serializers.ModelSerializer):
         )
 
 
+class Bookmark(serializers.ModelSerializer):
+    author = accounts_serializers.Author(read_only=True)
+    innovation = Innovation(read_only=True)
+
+    class Meta:
+        model = models.Like
+        fields = (
+            "author",
+            "innovation",
+        )
+        read_only_fields = (
+            "author",
+            "innovation",
+        )
+
+
 class InnovationComment(serializers.ModelSerializer):
     innovation = serializers.PrimaryKeyRelatedField(
         queryset=models.Innovation.objects.all()

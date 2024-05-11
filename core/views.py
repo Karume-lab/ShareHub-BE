@@ -139,7 +139,7 @@ def innovation_like_list(request, pk):
 
 
 @api_view(["DELETE"])
-def innovation_like_detail(request, pk):
+def unlike_innovation(request, pk):
     try:
         innovation = models.Innovation.objects.get(pk=pk)
     except models.Innovation.DoesNotExist:
@@ -169,13 +169,71 @@ def innovation_like_detail(request, pk):
         )
 
 
-def bookmark_innovation(request):
-    pass
+@api_view(["GET", "POST"])
+def bookmark_list(request, pk):
+    """
+    List all bookmarks for logged in user, or bookmark an innovation
+    """
+    try:
+        innovation = models.Innovation.objects.get(pk=pk)
+    except models.Innovation.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "GET":
+        bookmarks = models.Bookmark.objects.filter(user=request.user.user_profile)
+        paginated_response = main.paginate(request, bookmarks, serializers.Bookmark)
+        return paginated_response
+
+    elif request.method == "POST":
+        innovation_serialized_data = serializers.Innovation(
+            innovation, context={"request": request}
+        ).data
+
+        if innovation_serialized_data["is_bookmarked"]:
+            return Response(
+                {"detail": "You already bookmarked this innovation"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        else:
+            serializer = serializers.Bookmark(
+                data=request.data, context={"request": request}
+            )
+
+            if serializer.is_valid():
+                serializer.validated_data["author"] = request.user.user_profile
+                serializer.validated_data["innovation"] = innovation
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["DELETE"])
-def unbookmark_innovation(request):
-    pass
+def unbookmark_innovation(request, pk):
+    try:
+        innovation = models.Innovation.objects.get(pk=pk)
+    except models.Innovation.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    innovation_serialized_data = serializers.Innovation(
+        innovation, context={"request": request}
+    ).data
+
+    if innovation_serialized_data["is_bookmarked"]:
+        try:
+            bookmark = innovation.user_bookmarks.get(user=request.user.user_profile)
+            bookmark.delete()
+            return Response(
+                {"detail": "Deleted bookmark"}, status=status.HTTP_204_NO_CONTENT
+            )
+        except models.Bookmark.DoesNotExist:
+            return Response(
+                {"detail": "Bookmark does not exist"}, status=status.HTTP_404_NOT_FOUND
+            )
+    else:
+        return Response(
+            {"detail": "You have not bookmarked this innovation"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
 
 @api_view(["GET", "POST"])

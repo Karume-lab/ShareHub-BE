@@ -7,9 +7,9 @@ urlpatterns = [
     path("innovations/bookmarks/", views.bookmarks, name="bookmarks-list"),
     path("innovations/<int:pk>/", views.innovation_detail, name="innovation-detail"),
     path(
-        "innovations/<int:pk>/bookmark/",
-        views.bookmark_innovation,
-        name="bookmark_innovation",
+        "innovations/<int:pk>/bookmarks/",
+        views.bookmark_list,
+        name="bookmark-list",
     ),
     path(
         "innovations/<int:pk>/unbookmark/",
@@ -23,7 +23,7 @@ urlpatterns = [
     ),
     path(
         "innovations/<int:pk>/unlike/",
-        views.innovation_like_detail,
+        views.unlike_innovation,
         name="innovation_like-detail",
     ),
     path(
