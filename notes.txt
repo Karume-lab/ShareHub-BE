@@ -91,7 +91,7 @@ innovations/id/export/
 innovations/id/comments/
 innovations/id/comments/id/
 
-likes for request.user
+# likes for request.user
 
 # add created_at and updated_at in user profile
 profile page for users
