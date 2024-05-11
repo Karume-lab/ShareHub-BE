@@ -73,8 +73,8 @@ hiv testing
 # dashboard can be one or many
 
 TODO:
-profiles urls accounts
-profile page for users
+# profiles urls accounts
+# profile page for users
 search url
 innovations/id/export/
     the file

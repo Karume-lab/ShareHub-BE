@@ -28,10 +28,5 @@ urlpatterns = [
         views.user_innovation_list,
         name="userinnovation-list",
     ),
-    path(
-        "profiles/<int:pk>/bookmarks/",
-        views.user_innovation_list,
-        name="userinnovation-list",
-    ),
     path("profiles/me/", views.me_user_profile, name="userprofile-detail"),
 ]

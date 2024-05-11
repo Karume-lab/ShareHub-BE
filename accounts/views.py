@@ -9,6 +9,7 @@ from rest_framework import status
 from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -93,6 +94,7 @@ class LogoutView(APIView):
 
 
 @api_view(["GET", "POST"])
+@permission_classes([AllowAny])
 def user_profile_list(request):
     """
     List all user profiles
@@ -104,6 +106,7 @@ def user_profile_list(request):
 
 
 @api_view(["GET", "PUT", "PATCH", "DELETE"])
+@permission_classes([AllowAny])
 def user_profile_detail(request, pk):
     """
     Retrieve, update, or delete a user profile instance
@@ -117,42 +120,36 @@ def user_profile_detail(request, pk):
         serializer = serializers.UserProfile(profile, context={"request": request})
         return Response(serializer.data)
 
-    elif request.method == "PUT":
-        if not request.user.is_authenticated:
-            return Response(
-                {"detail": "User not authenticated"},
-                status=status.HTTP_401_UNAUTHORIZED,
-            )
+    if not request.user.is_authenticated:
+        return Response(
+            {"detail": "Authentication credentials were not provided."},
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
+
+    if not (
+        request.user.is_staff
+        or request.user.is_site_mod
+        or request.user.user_profile == profile
+    ):
+        return Response(
+            {"detail": "You do not have permission to access this resource."},
+            status=status.HTTP_403_FORBIDDEN,
+        )
+
+    if request.method in ["PUT", "PATCH"]:
         serializer = serializers.UserProfile(
-            profile, data=request.data, context={"request": request}
+            profile,
+            data=request.data,
+            partial=request.method == "PATCH",
+            context={"request": request},
         )
 
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == "PATCH":
-        if not request.user.is_authenticated:
-            return Response(
-                {"detail": "User not authenticated"},
-                status=status.HTTP_401_UNAUTHORIZED,
-            )
-        serializer = serializers.UserProfile(
-            profile, data=request.data, partial=True, context={"request": request}
-        )
-
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == "DELETE":
-        if not request.user.is_authenticated:
-            return Response(
-                {"detail": "User not authenticated"},
-                status=status.HTTP_401_UNAUTHORIZED,
-            )
         profile.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -187,5 +184,4 @@ def me_user_profile(request):
             )
         serializer = serializers.UserProfile(profile, context={"request": request})
         return Response(serializer.data)
-
     return Response({"detail": "Bad request"}, status=status.HTTP_400_BAD_REQUEST)
