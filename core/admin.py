@@ -24,6 +24,15 @@ class LikeAdmin(admin.ModelAdmin):
     )
 
 
+class BookmarkAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "user",
+        "innovation",
+    )
+
+
 admin.site.register(models.Innovation, InnovationAdmin)
 admin.site.register(models.InnovationComment, InnovationCommentAdmin)
 admin.site.register(models.Like, LikeAdmin)
+admin.site.register(models.Bookmark, BookmarkAdmin)

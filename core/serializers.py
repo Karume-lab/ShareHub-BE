@@ -6,6 +6,7 @@ from . import models
 class Innovation(serializers.ModelSerializer):
     author = accounts_serializers.Author(read_only=True)
     is_liked = serializers.SerializerMethodField()
+    is_bookmarked = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Innovation
@@ -19,6 +20,7 @@ class Innovation(serializers.ModelSerializer):
             "created_at",
             "updated_at",
             "is_liked",
+            "is_bookmarked",
             "status",
             "category",
         )
@@ -28,8 +30,16 @@ class Innovation(serializers.ModelSerializer):
             author = self.context.get("request").user.user_profile
             is_liked = obj.get_is_liked(author)
         except AttributeError:
-            is_liked = False
+            is_liked = None
         return is_liked
+
+    def get_is_bookmarked(self, obj):
+        try:
+            author = self.context.get("request").user.user_profile
+            is_bookmarked = obj.get_is_bookmarked(author)
+        except AttributeError:
+            is_bookmarked = None
+        return is_bookmarked
 
 
 class Like(serializers.ModelSerializer):

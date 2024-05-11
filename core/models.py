@@ -68,6 +68,9 @@ class Innovation(models.Model):
     def get_is_liked(self, author):
         return Like.objects.filter(author=author, innovation=self).exists()
 
+    def get_is_bookmarked(self, user):
+        return Bookmark.objects.filter(user=user, innovation=self).exists()
+
 
 class Like(models.Model):
     author = models.ForeignKey(
@@ -83,6 +86,16 @@ class Like(models.Model):
 
     def __repr__(self) -> str:
         return self.innovation.title
+
+
+class Bookmark(models.Model):
+    user = models.ForeignKey(
+        "accounts.UserProfile", on_delete=models.CASCADE, related_name="bookmarks"
+    )
+    innovation = models.ForeignKey(
+        Innovation, on_delete=models.CASCADE, related_name="user_bookmarks"
+    )
+    created_at = models.DateTimeField(_("Date created"), auto_now_add=True)
 
 
 class Forum(models.Model):
