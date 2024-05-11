@@ -27,7 +27,7 @@ class Innovation(models.Model):
     )
     dashboard_image = models.ImageField(
         _("Dashboard preview"),
-        upload_to="media/dashboards",
+        upload_to="dashboards/",
         height_field=None,
         width_field=None,
         max_length=None,
@@ -36,14 +36,14 @@ class Innovation(models.Model):
     )
     dashboard_definition = models.FileField(
         _("Dashboard and Dataset files"),
-        upload_to="media/dashboard_definitions",
+        upload_to="dashboard_definitions/",
         max_length=100,
         blank=True,
         null=True,
     )
     banner_image = models.ImageField(
         _("Dashboard banner image"),
-        upload_to="media/dashboards_banners",
+        upload_to="dashboards_banners/",
         height_field=None,
         width_field=None,
         max_length=None,

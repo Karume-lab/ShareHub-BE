@@ -73,9 +73,16 @@ hiv testing
 # dashboard can be one or many
 
 TODO:
+search url
+ordering
+admin panel
+status for innovations
+
+
+
+
 # profiles urls accounts
 # profile page for users
-search url
 # innovations/id/export/
     the file
 
@@ -84,64 +91,42 @@ search url
     # is_bookmarked
     # number of likes
     # number of comments
-
-
 # innovations/id/like/
 # innovations/id/unlike/
 # innovations/id/bookmark/
 # innovations/id/unbookmark/
 # innovations/id/comments/
 # innovations/id/comments/id/
-
 # likes for request.user
-
 # add created_at and updated_at in user profile
-
-
 # CRUD innovations
 # CRUD comments
 # likes
 # user profile
-
 # likes models
 # comments
-
 # permissions
 # paginate comments
 # paginate likes
 # comments detail?
-
 # first_name and last_name on sign up
-
-
-
-
 # how to fetch related fields together
-serializers explanation
-status for innovations
+# serializers explanation
 # pagination
 # get innovations for specific user
 # fetch user information with the user profile
 # add in comments
-
-tinker with the different types of serializers
-
-
+# tinker with the different types of serializers
 # user authentication
 # djoser
-
 # protect endpoints
 # swagger ui
 # using cookies
-
 # crud on innovations
 # swagger ui
-# drf-spectacular
-https://www.youtube.com/watch?v=XBxssKYf5G0&list=PLOLrQ9Pn6cawinBJbH5d9IfloO9RRPMiq&index=25
 
 
 REFERENCES:
-
 USER AUTH
 https://www.youtube.com/watch?v=lFD5uoCcvSA&list=PLJRGQoqpRwdfoa9591BcUS6NmMpZcvFsM&index=4
 
@@ -153,7 +138,7 @@ https://www.geeksforgeeks.org/function-based-views-django-rest-framework/
 
 
 MENTOR INSIGHTS:
-superset
+# superset
     dashboards
     display the dashboard from the site:
         link or the file
