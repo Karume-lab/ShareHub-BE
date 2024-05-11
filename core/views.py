@@ -184,7 +184,6 @@ def bookmark_innovation(request, pk):
     except models.Innovation.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-
     innovation_serialized_data = serializers.Innovation(
         innovation, context={"request": request}
     ).data
@@ -295,10 +294,10 @@ def innovation_comment_detail(request, pk, cpk):
         return Response(serializer.data)
 
     elif request.method in ["PUT", "PATCH"]:
-        if (
-            request.user.user_profile != innovation_comment.author
-            or not request.user.is_site_mod
-            or not request.user.is_staff
+        if not (
+            request.user.is_staff
+            or request.user.is_site_mod
+            or request.user.user_profile == innovation_comment.author
         ):
             return Response(
                 {"detail": "You do not have permission to access this resource."},
@@ -319,10 +318,10 @@ def innovation_comment_detail(request, pk, cpk):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == "DELETE":
-        if (
-            request.user.user_profile != innovation_comment.author
-            or not request.user.is_site_mod
-            or not request.user.is_staff
+        if not (
+            request.user.is_staff
+            or request.user.is_site_mod
+            or request.user.user_profile == innovation_comment.author
         ):
             return Response(
                 {"detail": "You do not have permission to access this resource."},
