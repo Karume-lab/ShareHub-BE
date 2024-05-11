@@ -32,7 +32,23 @@ class Innovation(models.Model):
         width_field=None,
         max_length=None,
         blank=True,
-        null=True
+        null=True,
+    )
+    dashboard_definition = models.FileField(
+        _("Dashboard and Dataset files"),
+        upload_to="media/dashboard_definitions",
+        max_length=100,
+        blank=True,
+        null=True,
+    )
+    banner_image = models.ImageField(
+        _("Dashboard banner image"),
+        upload_to="media/dashboards_banners",
+        height_field=None,
+        width_field=None,
+        max_length=None,
+        blank=True,
+        null=True,
     )
     created_at = models.DateTimeField(_("Date created"), auto_now_add=True)
     updated_at = models.DateTimeField(_("Date updated"), auto_now=True)
@@ -49,14 +65,24 @@ class Innovation(models.Model):
     def __repr__(self) -> str:
         return self.title
 
+    def get_is_liked(self, author):
+        return Like.objects.filter(author=author, innovation=self).exists()
+
 
 class Like(models.Model):
     author = models.ForeignKey(
-        "accounts.CustomUser", on_delete=models.CASCADE, related_name="likes"
+        "accounts.UserProfile", on_delete=models.CASCADE, related_name="likes"
     )
     innovation = models.ForeignKey(
         Innovation, on_delete=models.CASCADE, related_name="likes"
     )
+    created_at = models.DateTimeField(_("Date created"), auto_now_add=True)
+
+    def __str__(self) -> str:
+        return self.innovation.title
+
+    def __repr__(self) -> str:
+        return self.innovation.title
 
 
 class Forum(models.Model):
@@ -69,15 +95,13 @@ class InnovationComment(models.Model):
         on_delete=models.CASCADE,
         related_name="innovation_comments",
     )
+    innovation = models.ForeignKey(
+        "Innovation", on_delete=models.CASCADE, related_name="innovation_comments"
+    )
     text = models.TextField(_("Comment"))
     created_at = models.DateTimeField(_("Date created"), auto_now_add=True)
     updated_at = models.DateTimeField(_("Date updated"), auto_now=True)
     is_edited = models.BooleanField(_("Is edited"), default=False)
-    likes = models.IntegerField(_("Likes"), default=0)
-
-    innovation = models.ForeignKey(
-        "Innovation", on_delete=models.CASCADE, related_name="innovation_comments"
-    )
 
 
 class ForumComment(models.Model):
