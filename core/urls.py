@@ -4,12 +4,13 @@ from . import views
 
 urlpatterns = [
     path("innovations/", views.innovation_list, name="innovation-list"),
-    path("innovations/bookmarks/", views.bookmarks, name="bookmarks-list"),
+    path("innovations/bookmarks/", views.user_bookmarks, name="bookmarks-list"),
+    path("innovations/likes/", views.user_innovation_like_list, name="user_innovation_like-list"),
     path("innovations/<int:pk>/", views.innovation_detail, name="innovation-detail"),
     path(
         "innovations/<int:pk>/bookmarks/",
-        views.bookmark_list,
-        name="bookmark-list",
+        views.bookmark_innovation,
+        name="bookmark_innovation",
     ),
     path(
         "innovations/<int:pk>/unbookmark/",

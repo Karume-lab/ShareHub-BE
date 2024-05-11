@@ -65,12 +65,8 @@ class Bookmark(serializers.ModelSerializer):
     innovation = Innovation(read_only=True)
 
     class Meta:
-        model = models.Like
+        model = models.Bookmark
         fields = (
-            "author",
-            "innovation",
-        )
-        read_only_fields = (
             "author",
             "innovation",
         )

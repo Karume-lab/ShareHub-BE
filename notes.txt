@@ -86,8 +86,8 @@ innovations/id/export/
 
 # innovations/id/like/
 # innovations/id/unlike/
-innovations/id/bookmark/
-innovations/id/unbookmark/
+# innovations/id/bookmark/
+# innovations/id/unbookmark/
 innovations/id/comments/
 innovations/id/comments/id/
 
