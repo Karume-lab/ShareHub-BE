@@ -10,7 +10,8 @@ from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from . import models
 from . import serializers
 from core import models as core_models
@@ -174,6 +175,7 @@ def user_innovation_list(request, pk):
 
 
 @api_view(["GET"])
+@permission_classes([IsAuthenticated])
 def me_user_profile(request):
     if request.method == "GET":
         try:
