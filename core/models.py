@@ -58,10 +58,12 @@ class Innovation(models.Model):
     category = models.CharField(
         _("Category"), max_length=1, default="H", choices=CATEGORY_CHOICES
     )
-    comments_number = models.IntegerField(
+    comments_number = models.PositiveIntegerField(
         _("Number of comments"), default=0, blank=True
     )
-    likes_number = models.IntegerField(_("Number of likes"), default=0, blank=True)
+    likes_number = models.PositiveIntegerField(
+        _("Number of likes"), default=0, blank=True
+    )
 
     def __str__(self) -> str:
         return self.title

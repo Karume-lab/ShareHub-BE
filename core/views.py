@@ -109,6 +109,7 @@ def like_innovation(request, pk):
         )
     else:
         innovation.likes_number += 1
+        innovation.save()
         serializer = serializers.Like(data=request.data, context={"request": request})
 
         if serializer.is_valid():
@@ -132,6 +133,8 @@ def unlike_innovation(request, pk):
 
     if innovation_serialized_data["is_liked"]:
         try:
+            innovation.likes_number -= 1
+            innovation.save()
             like = innovation.likes.get(author=request.user.user_profile)
             like.delete()
             return Response(
