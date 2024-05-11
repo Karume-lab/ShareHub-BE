@@ -73,43 +73,43 @@ hiv testing
 # dashboard can be one or many
 
 TODO:
-innovations/
+profiles urls accounts
+profile page for users
+search url
+innovations/id/export/
+    the file
+
+# innovations/
     # is_liked
     # is_bookmarked
     # number of likes
-    number of comments
+    # number of comments
 
-profiles urls accounts
-
-innovations/id/export/
-    the file
 
 # innovations/id/like/
 # innovations/id/unlike/
 # innovations/id/bookmark/
 # innovations/id/unbookmark/
-innovations/id/comments/
-innovations/id/comments/id/
+# innovations/id/comments/
+# innovations/id/comments/id/
 
 # likes for request.user
 
 # add created_at and updated_at in user profile
-profile page for users
 
-search url
 
-CRUD innovations
-CRUD comments
+# CRUD innovations
+# CRUD comments
 # likes
 # user profile
 
 # likes models
-comments
+# comments
 
 # permissions
-paginate comments
+# paginate comments
 # paginate likes
-comments detail?
+# comments detail?
 
 # first_name and last_name on sign up
 
@@ -122,7 +122,7 @@ status for innovations
 # pagination
 # get innovations for specific user
 # fetch user information with the user profile
-add in comments
+# add in comments
 
 tinker with the different types of serializers
 

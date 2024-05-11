@@ -248,6 +248,13 @@ def innovation_comment_list(request, pk):
     """
     List all comments for a specific innovation, or create a comment for an innovation
     """
+    try:
+        innovation = models.Innovation.objects.get(pk=pk)
+    except models.Innovation.DoesNotExist:
+        return Response(
+            {"detail": "Innovation does not exist"}, status=status.HTTP_404_NOT_FOUND
+        )
+
     if request.method == "GET":
         innovation_comments = models.InnovationComment.objects.filter(innovation_id=pk)
         paginated_response = main.paginate(
@@ -269,6 +276,8 @@ def innovation_comment_list(request, pk):
 
         if serializer.is_valid():
             serializer.validated_data["author"] = request.user.user_profile
+            innovation.comments_number += 1
+            innovation.save()
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -280,6 +289,13 @@ def innovation_comment_detail(request, pk, cpk):
     """
     Contains methods for updating an innovation comment (either partially or entirely) and deleting an innovation comment
     """
+    try:
+        innovation = models.Innovation.objects.get(pk=pk)
+    except models.Innovation.DoesNotExist:
+        return Response(
+            {"detail": "Innovation does not exist"}, status=status.HTTP_404_NOT_FOUND
+        )
+
     try:
         innovation_comment = models.InnovationComment.objects.get(pk=cpk)
     except models.InnovationComment.DoesNotExist:
@@ -327,5 +343,7 @@ def innovation_comment_detail(request, pk, cpk):
                 {"detail": "You do not have permission to access this resource."},
                 status=status.HTTP_403_FORBIDDEN,
             )
+        innovation.comments_number -= 1
+        innovation.save()
         innovation_comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
