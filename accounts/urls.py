@@ -23,10 +23,15 @@ urlpatterns = [
     path("auth/logout/", view=views.LogoutView.as_view(), name="auth-logout"),
     path("profiles/", views.user_profile_list, name="userprofile-list"),
     path("profiles/<int:pk>/", views.user_profile_detail, name="userprofile-detail"),
-    path("profiles/me/", views.me_user_profile, name="userprofile-detail"),
     path(
         "profiles/<int:pk>/innovations/",
         views.user_innovation_list,
         name="userinnovation-list",
     ),
+    path(
+        "profiles/<int:pk>/bookmarks/",
+        views.user_innovation_list,
+        name="userinnovation-list",
+    ),
+    path("profiles/me/", views.me_user_profile, name="userprofile-detail"),
 ]
