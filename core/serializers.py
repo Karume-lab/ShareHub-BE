@@ -53,12 +53,13 @@ class InnovationZipFile(serializers.ModelSerializer):
 
 
 class Like(serializers.ModelSerializer):
-    author = accounts_serializers.Author(read_only=True)
+    user = accounts_serializers.Author(read_only=True)
+    innovation = Innovation(read_only=True)
 
     class Meta:
         model = models.Like
         fields = (
-            "author",
+            "user",
             "innovation",
         )
         read_only_fields = (
@@ -68,13 +69,13 @@ class Like(serializers.ModelSerializer):
 
 
 class Bookmark(serializers.ModelSerializer):
-    author = accounts_serializers.Author(read_only=True)
+    user = accounts_serializers.Author(read_only=True)
     innovation = Innovation(read_only=True)
 
     class Meta:
         model = models.Bookmark
         fields = (
-            "author",
+            "user",
             "innovation",
         )
 

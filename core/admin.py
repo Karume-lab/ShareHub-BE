@@ -19,7 +19,7 @@ class InnovationCommentAdmin(admin.ModelAdmin):
 class LikeAdmin(admin.ModelAdmin):
     list_display = (
         "id",
-        "author",
+        "user",
         "innovation",
     )
 

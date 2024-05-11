@@ -71,15 +71,15 @@ class Innovation(models.Model):
     def __repr__(self) -> str:
         return self.title
 
-    def get_is_liked(self, author):
-        return Like.objects.filter(author=author, innovation=self).exists()
+    def get_is_liked(self, user):
+        return Like.objects.filter(user=user, innovation=self).exists()
 
     def get_is_bookmarked(self, user):
         return Bookmark.objects.filter(user=user, innovation=self).exists()
 
 
 class Like(models.Model):
-    author = models.ForeignKey(
+    user = models.ForeignKey(
         "accounts.UserProfile", on_delete=models.CASCADE, related_name="likes"
     )
     innovation = models.ForeignKey(

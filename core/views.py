@@ -129,7 +129,7 @@ def innovation_like_list(request, pk):
             )
 
             if serializer.is_valid():
-                serializer.validated_data["author"] = request.user.user_profile
+                serializer.validated_data["user"] = request.user.user_profile
                 serializer.validated_data["innovation"] = innovation
                 serializer.save()
                 innovation.save()
@@ -139,7 +139,9 @@ def innovation_like_list(request, pk):
 
 @api_view(["GET"])
 def user_innovation_like_list(request):
-    pass
+    likes = models.Like.objects.filter(user=request.user.user_profile)
+    paginated_response = main.paginate(request, likes, serializers.Like)
+    return paginated_response
 
 
 @api_view(["DELETE"])
