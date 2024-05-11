@@ -302,8 +302,7 @@ def innovation_comment_detail(request, pk, cpk):
             status=status.HTTP_403_FORBIDDEN,
         )
 
-    elif request.method in ["PUT", "PATCH"]:
-
+    if request.method in ["PUT", "PATCH"]:
         serializer = serializers.InnovationComment(
             innovation_comment,
             data=request.data,
