@@ -106,7 +106,7 @@ comments
 
 # permissions
 paginate comments
-paginate likes
+# paginate likes
 comments detail?
 
 # first_name and last_name on sign up

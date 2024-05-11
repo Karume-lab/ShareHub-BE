@@ -23,6 +23,8 @@ class UserProfile(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "phone_number",
+            "created_at",
+            "updated_at",
             "bio",
             "profile_picture",
         )

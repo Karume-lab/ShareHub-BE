@@ -53,6 +53,8 @@ class UserProfile(models.Model):
     email = models.EmailField(_("Email"), max_length=254)
     first_name = models.CharField(max_length=100, blank=True)
     last_name = models.CharField(max_length=100, blank=True)
+    created_at = models.DateTimeField(_("Date created"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("Date updated"), auto_now=True)
     phone_number = PhoneNumberField(blank=True)
     bio = models.TextField(_("Bio"), blank=True)
     profile_picture = models.ImageField(
