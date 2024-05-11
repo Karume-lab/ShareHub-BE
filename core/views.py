@@ -103,7 +103,10 @@ def like_innovation(request, pk):
     ).data
 
     if innovation_serialized_data["is_liked"]:
-        return Response({"detail": "You already liked this innovation"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {"detail": "You already liked this innovation"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
     else:
         innovation.likes_number += 1
         serializer = serializers.Like(data=request.data, context={"request": request})
@@ -116,9 +119,33 @@ def like_innovation(request, pk):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-def unlike_innovation(request):
-    print("Hi")
-    return Response({})
+@api_view(["DELETE"])
+def unlike_innovation(request, pk):
+    try:
+        innovation = models.Innovation.objects.get(pk=pk)
+    except models.Innovation.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    innovation_serialized_data = serializers.Innovation(
+        innovation, context={"request": request}
+    ).data
+
+    if innovation_serialized_data["is_liked"]:
+        try:
+            like = innovation.likes.get(author=request.user.user_profile)
+            like.delete()
+            return Response(
+                {"detail": "Deleted like"}, status=status.HTTP_204_NO_CONTENT
+            )
+        except models.Like.DoesNotExist:
+            return Response(
+                {"detail": "Like does not exist"}, status=status.HTTP_404_NOT_FOUND
+            )
+    else:
+        return Response(
+            {"detail": "You already unliked this innovation"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
 
 def bookmark_innovation(request):
