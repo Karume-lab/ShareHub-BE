@@ -73,7 +73,6 @@ hiv testing
 # dashboard can be one or many
 
 TODO:
-search url
 ordering
 admin panel
 status for innovations
@@ -81,6 +80,7 @@ change production database to Postgres
 
 
 
+# search url
 # profiles urls accounts
 # profile page for users
 # innovations/id/export/
