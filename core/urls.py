@@ -3,6 +3,7 @@ from . import views
 
 
 urlpatterns = [
+    path("search/<str:query>/", views.search, name="search"),
     path("innovations/", views.innovation_list, name="innovation-list"),
     path("innovations/bookmarks/", views.user_bookmarks, name="bookmarks-list"),
     path(

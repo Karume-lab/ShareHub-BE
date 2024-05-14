@@ -1,10 +1,12 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
+from django.db.models import Q
 from rest_framework import status
 from utils import main
 from . import models
 from . import serializers
+from accounts import serializers as account_serializers, models as account_models
 
 
 @api_view(["GET", "POST"])
@@ -333,3 +335,22 @@ def innovation_comment_detail(request, pk, cpk):
         innovation.save()
         innovation_comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def search(request, query):
+    innovation_query = Q(title__icontains=query) | Q(description__icontains=query)
+    innovations = models.Innovation.objects.filter(innovation_query)
+    profile_query = Q(username__icontains=query) | Q(email__icontains=query)
+    profiles = account_models.UserProfile.objects.filter(profile_query)
+    innovation_serializer = serializers.Innovation(
+        innovations, many=True, context={"request": request}
+    )
+    profile_serializer = account_serializers.UserProfile(
+        profiles, many=True, context={"request": request}
+    )
+
+    return Response(
+        {"innovations": innovation_serializer.data, "profiles": profile_serializer.data}
+    )
