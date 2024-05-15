@@ -27,6 +27,9 @@ class UserProfile(serializers.ModelSerializer):
             "updated_at",
             "bio",
             "profile_picture",
+            "linked_in_url",
+            "x_in_url",
+            "superset_url",
         )
 
 

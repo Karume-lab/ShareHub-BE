@@ -66,6 +66,13 @@ class UserProfile(models.Model):
         width_field=None,
         max_length=None,
     )
+    linked_in_url = models.URLField(
+        _("LinkedIn Profile"), max_length=100, blank=True, null=True
+    )
+    x_in_url = models.URLField(_("X Profile"), max_length=100, blank=True, null=True)
+    superset_url = models.URLField(
+        _("Superset Profile"), max_length=100, blank=True, null=True
+    )
 
     def save(self, *args, **kwargs):
         if self.user:
