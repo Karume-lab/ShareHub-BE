@@ -214,7 +214,7 @@ def user_like_list(request, pk):
 
 @api_view(["GET"])
 def user_innovations(request):
-    innovations = core_models.Innovation.objects.filter(user=request.user.user_profile)
+    innovations = core_models.Innovation.objects.filter(author=request.user.user_profile)
     paginated_response = main.paginate(
         request, innovations, core_serializers.Innovation
     )
