@@ -39,4 +39,5 @@ urlpatterns = [
         name="userlike-list",
     ),
     path("profiles/me/", views.me_user_profile, name="userprofile-detail"),
+    path("profiles/me/innovations/", views.user_innovations, name="userprofile-detail"),
 ]

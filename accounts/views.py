@@ -197,6 +197,7 @@ def user_bookmark_list(request, pk):
     paginated_response = main.paginate(request, bookmarks, core_serializers.Bookmark)
     return paginated_response
 
+
 @api_view(["GET"])
 def user_like_list(request, pk):
     try:
@@ -208,4 +209,13 @@ def user_like_list(request, pk):
     likes = core_models.Like.objects.filter(user=user)
     print(likes)
     paginated_response = main.paginate(request, likes, core_serializers.Like)
+    return paginated_response
+
+
+@api_view(["GET"])
+def user_innovations(request):
+    innovations = core_models.Innovation.objects.filter(user=request.user.user_profile)
+    paginated_response = main.paginate(
+        request, innovations, core_serializers.Innovation
+    )
     return paginated_response
