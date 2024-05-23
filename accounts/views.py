@@ -137,18 +137,17 @@ def user_profile_detail(request, pk):
         )
 
     if request.method in ["PUT", "PATCH"]:
-        print(request.data)
-        # serializer = serializers.UserProfile(
-        #     profile,
-        #     data=request.data,
-        #     partial=request.method == "PATCH",
-        #     context={"request": request},
-        # )
+        serializer = serializers.UserProfile(
+            profile,
+            data=request.data,
+            partial=request.method == "PATCH",
+            context={"request": request},
+        )
 
-        # if serializer.is_valid():
-        #     serializer.save()
-        #     return Response(serializer.data, status=status.HTTP_200_OK)
-        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == "DELETE":
         profile.delete()
