@@ -157,7 +157,7 @@ def unlike_innovation(request, pk):
         try:
             innovation.likes_number -= 1
             innovation.save()
-            like = innovation.likes.get(author=request.user.user_profile)
+            like = innovation.likes.get(user=request.user.user_profile)
             like.delete()
             return Response(
                 {"detail": "Unliked innovation"}, status=status.HTTP_204_NO_CONTENT

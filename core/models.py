@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 from django.utils.translation import gettext_lazy as _
 
 
@@ -61,8 +62,13 @@ class Innovation(models.Model):
     comments_number = models.PositiveIntegerField(
         _("Number of comments"), default=0, blank=True
     )
-    likes_number = models.PositiveIntegerField(
-        _("Number of likes"), default=0, blank=True
+    likes_number = models.IntegerField(
+        _("Number of likes"),
+        default=0,
+        blank=True,
+        validators=[
+            MinValueValidator(0),
+        ]
     )
 
     def __str__(self) -> str:

@@ -137,17 +137,18 @@ def user_profile_detail(request, pk):
         )
 
     if request.method in ["PUT", "PATCH"]:
-        serializer = serializers.UserProfile(
-            profile,
-            data=request.data,
-            partial=request.method == "PATCH",
-            context={"request": request},
-        )
+        print(request.data)
+        # serializer = serializers.UserProfile(
+        #     profile,
+        #     data=request.data,
+        #     partial=request.method == "PATCH",
+        #     context={"request": request},
+        # )
 
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # if serializer.is_valid():
+        #     serializer.save()
+        #     return Response(serializer.data, status=status.HTTP_200_OK)
+        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == "DELETE":
         profile.delete()
@@ -214,7 +215,9 @@ def user_like_list(request, pk):
 
 @api_view(["GET"])
 def user_innovations(request):
-    innovations = core_models.Innovation.objects.filter(author=request.user.user_profile)
+    innovations = core_models.Innovation.objects.filter(
+        author=request.user.user_profile
+    )
     paginated_response = main.paginate(
         request, innovations, core_serializers.Innovation
     )
