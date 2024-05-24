@@ -68,7 +68,7 @@ class Innovation(models.Model):
         blank=True,
         validators=[
             MinValueValidator(0),
-        ]
+        ],
     )
 
     def __str__(self) -> str:
