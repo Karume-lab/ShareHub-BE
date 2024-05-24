@@ -16,7 +16,7 @@ def innovation_list(request):
     List all innovations, or create a new innovation
     """
     if request.method == "GET":
-        innovations = models.Innovation.objects.all()
+        innovations = models.Innovation.objects.filter(status="P")
         paginated_response = main.paginate(request, innovations, serializers.Innovation)
         return paginated_response
 
