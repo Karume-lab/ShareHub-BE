@@ -9,11 +9,10 @@ class Innovation(models.Model):
         ("P", "Published"),
         ("D", "Draft"),
     )
-    CATEGORY_CHOICES = (
-        ("H", "HIV"),
-        ("T", "Tuberculosis"),
-        ("A", "Airborne"),
-        ("W", "Waterborne"),
+    DASHBOARD_TYPES = (
+        ("S", "Superset"),
+        ("M", "Metabase"),
+        ("P", "Power BI"),
         ("O", "Other"),
     )
     author = models.ForeignKey(
@@ -35,29 +34,21 @@ class Innovation(models.Model):
         blank=True,
         null=True,
     )
-    dashboard_definition = models.FileField(
+    dashboard_definitions = models.FileField(
         _("Dashboard and Dataset files"),
         upload_to="dashboard_definitions/",
         max_length=100,
         blank=True,
         null=True,
     )
-    banner_image = models.ImageField(
-        _("Dashboard banner image"),
-        upload_to="dashboards_banners/",
-        height_field=None,
-        width_field=None,
-        max_length=None,
-        blank=True,
-        null=True,
-    )
+    dashboard_id = models.TextField(_("Dashboard Embed ID"), null=True, blank=True)
     created_at = models.DateTimeField(_("Date created"), auto_now_add=True)
     updated_at = models.DateTimeField(_("Date updated"), auto_now=True)
     status = models.CharField(
         _("Status"), max_length=2, default="P", choices=STATUS_CHOICES
     )
-    category = models.CharField(
-        _("Category"), max_length=1, default="H", choices=CATEGORY_CHOICES
+    dashboard_type = models.CharField(
+        _("Dashboard Type"), max_length=1, default="O", choices=DASHBOARD_TYPES
     )
     comments_number = models.PositiveIntegerField(
         _("Number of comments"), default=0, blank=True
@@ -110,10 +101,6 @@ class Bookmark(models.Model):
     created_at = models.DateTimeField(_("Date created"), auto_now_add=True)
 
 
-class Forum(models.Model):
-    pass
-
-
 class InnovationComment(models.Model):
     author = models.ForeignKey(
         "accounts.UserProfile",
@@ -127,16 +114,3 @@ class InnovationComment(models.Model):
     created_at = models.DateTimeField(_("Date created"), auto_now_add=True)
     updated_at = models.DateTimeField(_("Date updated"), auto_now=True)
     is_edited = models.BooleanField(_("Is edited"), default=False)
-
-
-class ForumComment(models.Model):
-    author = models.ForeignKey(
-        "accounts.UserProfile", on_delete=models.CASCADE, related_name="forum_comments"
-    )
-    text = models.TextField(_("Comment"))
-    created_at = models.DateTimeField(_("Date created"), auto_now_add=True)
-    updated_at = models.DateTimeField(_("Date updated"), auto_now=True)
-    is_edited = models.BooleanField(_("Is edited"), default=False)
-    likes = models.IntegerField(_("Likes"), default=0)
-
-    forum = models.ForeignKey(Forum, on_delete=models.CASCADE)

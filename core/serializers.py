@@ -17,8 +17,8 @@ class Innovation(serializers.ModelSerializer):
             "description",
             "dashboard_link",
             "dashboard_image",
-            "dashboard_definition",
-            "banner_image",
+            "dashboard_definitions",
+            "dashboard_id",
             "comments_number",
             "likes_number",
             "created_at",
@@ -26,7 +26,7 @@ class Innovation(serializers.ModelSerializer):
             "is_liked",
             "is_bookmarked",
             "status",
-            "category",
+            "dashboard_type",
         )
 
     def get_is_liked(self, obj):
