@@ -40,4 +40,10 @@ urlpatterns = [
     ),
     path("profiles/me/", views.me_user_profile, name="userprofile-detail"),
     path("profiles/me/innovations/", views.user_innovations, name="userprofile-detail"),
+    path("profiles/me/drafts/", views.user_drafts, name="userprofile-detail"),
+    path(
+        "profiles/me/drafts/<int:pk>/publish/",
+        views.publish_draft,
+        name="publishdraft",
+    ),
 ]

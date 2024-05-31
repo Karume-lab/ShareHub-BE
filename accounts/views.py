@@ -221,3 +221,30 @@ def user_innovations(request):
         request, innovations, core_serializers.Innovation
     )
     return paginated_response
+
+
+@api_view(["GET"])
+def user_drafts(request):
+    innovations = core_models.Innovation.objects.filter(
+        author=request.user.user_profile, status="D"
+    )
+    paginated_response = main.paginate(
+        request, innovations, core_serializers.Innovation
+    )
+    return paginated_response
+
+
+@api_view(["POST"])
+def publish_draft(request, pk):
+    try:
+        innovation = core_models.Innovation.objects.get(pk=pk)
+    except core_models.Innovation.DoesNotExist:
+        return Response(
+            {"detail": "Innovation does not exist"}, status=status.HTTP_404_NOT_FOUND
+        )
+
+    innovation.status = "P"
+    innovation.save()
+    return Response(
+        {"detail": "Published innovation successfully"}, status=status.HTTP_200_OK
+    )
