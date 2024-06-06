@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-d&bmbqt^mo2xzhsnhce1&a8vq6bh7hp%4r1z$#o*#)17#z(-=b
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=True, cast=bool)
-PRODUCTION = config("PRODUCTION", default=False, cast=bool)
+DEVELOPMENT = config("DEVELOPMENT", default=False, cast=bool)
 
 ALLOWED_HOSTS = ["*"]
 
@@ -142,10 +142,10 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-if PRODUCTION:
-    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-else:
+if DEVELOPMENT:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
