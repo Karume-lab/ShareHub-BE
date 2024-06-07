@@ -113,30 +113,32 @@ def innovation_like_list(request, pk):
         return paginated_response
 
     elif request.method == "POST":
-        if not request.user.is_authenticated:
-            return Response(
-                {"detail": "Authentication credentials were not provided."},
-                status=status.HTTP_401_UNAUTHORIZED,
-            )
+        print(innovation.likes_number)
+        return Response({})
+        # if not request.user.is_authenticated:
+        #     return Response(
+        #         {"detail": "Authentication credentials were not provided."},
+        #         status=status.HTTP_401_UNAUTHORIZED,
+        #     )
 
-        if innovation.get_is_liked(request.user.user_profile):
-            return Response(
-                {"detail": "You already liked this innovation"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        else:
-            innovation.likes_number += 1
-            serializer = serializers.Like(
-                data=request.data, context={"request": request}
-            )
+        # if innovation.get_is_liked(request.user.user_profile):
+        #     return Response(
+        #         {"detail": "You already liked this innovation"},
+        #         status=status.HTTP_400_BAD_REQUEST,
+        #     )
+        # else:
+        #     innovation.likes_number += 1
+        #     serializer = serializers.Like(
+        #         data=request.data, context={"request": request}
+        #     )
 
-            if serializer.is_valid():
-                serializer.validated_data["user"] = request.user.user_profile
-                serializer.validated_data["innovation"] = innovation
-                serializer.save()
-                innovation.save()
-                return Response(serializer.data)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        #     if serializer.is_valid():
+        #         serializer.validated_data["user"] = request.user.user_profile
+        #         serializer.validated_data["innovation"] = innovation
+        #         serializer.save()
+        #         innovation.save()
+        #         return Response(serializer.data)
+        #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET"])

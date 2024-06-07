@@ -41,7 +41,7 @@ class Innovation(models.Model):
         blank=True,
         null=True,
     )
-    dashboard_id = models.TextField(_("Dashboard Embed ID"), null=True, blank=True)
+    embed_id = models.CharField(_("Dashboard Embed ID"), null=True, blank=True, max_length=256)
     created_at = models.DateTimeField(_("Date created"), auto_now_add=True)
     updated_at = models.DateTimeField(_("Date updated"), auto_now=True)
     status = models.CharField(

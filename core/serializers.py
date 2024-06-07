@@ -18,7 +18,7 @@ class Innovation(serializers.ModelSerializer):
             "dashboard_link",
             "dashboard_image",
             "dashboard_definitions",
-            "dashboard_id",
+            "embed_id",
             "comments_number",
             "likes_number",
             "created_at",

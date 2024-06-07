@@ -3,7 +3,15 @@ from . import models
 
 
 class InnovationAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", "author", "created_at", "updated_at", "status")
+    list_display = (
+        "id",
+        "title",
+        "author",
+        "created_at",
+        "updated_at",
+        "status",
+        "likes_number",
+    )
 
 
 class InnovationCommentAdmin(admin.ModelAdmin):
